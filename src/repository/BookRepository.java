@@ -45,4 +45,24 @@ public class BookRepository {
         }
     }
 
+    public Book updateBook(long id, double newPrice) {
+        try (
+                Connection connection = DatabaseConfig.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement("UPDATE book SET price = ? WHERE id = ?")
+        ) {
+            preparedStatement.setDouble(1, newPrice);
+            preparedStatement.setLong(2, id);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected == 0) {
+                throw new BookNotFoundException("Couldn't find book with id: " + id);
+            }
+
+            System.out.println("Book updated successfully!");
+            return findBook(id);
+        } catch (SQLException e) {
+            throw new DatabaseOperationException("Book update operation failed: " + e.getMessage());
+        }
+    }
 }
