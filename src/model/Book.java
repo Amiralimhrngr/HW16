@@ -7,6 +7,14 @@ public class Book {
     private double price;
     private int stock;
 
+    public Book(Long id, String title, String author, double price, int stock) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.price = price;
+        this.stock = stock;
+    }
+
     public Book(String title, String author, Double price, int stock) {
         this.title = title;
         this.author = author;
