@@ -65,4 +65,21 @@ public class BookRepository {
             throw new DatabaseOperationException("Book update operation failed: " + e.getMessage());
         }
     }
+
+    public int deleteBook(long id) {
+        try (
+                Connection connection = DatabaseConfig.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM book WHERE id = ?")
+        ) {
+            preparedStatement.setLong(1, id);
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new BookNotFoundException("Couldn't find book with id: " + id);
+            }
+            System.out.println("Book has been deleted successfully!");
+            return rowsAffected;
+        } catch (SQLException e) {
+            throw new DatabaseOperationException("Book delete operation failed: " + e.getMessage());
+        }
+    }
 }
