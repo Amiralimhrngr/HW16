@@ -36,7 +36,7 @@ public class BookRepository {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                return new Book(id, resultSet.getString("title"), resultSet.getString("author"), resultSet.getDouble("price"), resultSet.getInt("stock"));
+                return new Book(resultSet.getLong("id"), resultSet.getString("title"), resultSet.getString("author"), resultSet.getDouble("price"), resultSet.getInt("stock"));
             } else {
                 throw new BookNotFoundException("Couldn't find book with id: " + id);
             }
@@ -58,8 +58,6 @@ public class BookRepository {
             if (rowsAffected == 0) {
                 throw new BookNotFoundException("Couldn't find book with id: " + id);
             }
-
-            System.out.println("Book updated successfully!");
             return findBook(id);
         } catch (SQLException e) {
             throw new DatabaseOperationException("Book update operation failed: " + e.getMessage());
@@ -76,7 +74,6 @@ public class BookRepository {
             if (rowsAffected == 0) {
                 throw new BookNotFoundException("Couldn't find book with id: " + id);
             }
-            System.out.println("Book has been deleted successfully!");
             return rowsAffected;
         } catch (SQLException e) {
             throw new DatabaseOperationException("Book delete operation failed: " + e.getMessage());
