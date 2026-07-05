@@ -31,13 +31,29 @@ public class MemberRepository {
         ) {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()){
+            if (resultSet.next()) {
                 return new Member(resultSet.getLong("id"), resultSet.getString("full_name"), resultSet.getString("phone"));
             } else {
                 throw new MemberNotFoundException("Couldn't find member with id: " + id);
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
             throw new DatabaseOperationException("Member find operation failed: " + e.getMessage());
+        }
+    }
+
+    public int deleteMember(long id) {
+        try (
+                Connection connection = DatabaseConfig.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM member WHERE id = ?")
+        ) {
+            preparedStatement.setLong(1, id);
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected == 0){
+                throw new MemberNotFoundException("Couldn't find member with id: " + id);
+            }
+            return rowsAffected;
+        } catch (SQLException e) {
+            throw new DatabaseOperationException("Member delete operation failed: " + e.getMessage());
         }
     }
 }
