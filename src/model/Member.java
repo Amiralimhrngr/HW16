@@ -5,6 +5,12 @@ public class Member {
     private String fullName;
     private String phone;
 
+    public Member(Long id, String fullName, String phone) {
+        this.id = id;
+        this.fullName = fullName;
+        this.phone = phone;
+    }
+
     public Member(String fullName, String phone) {
         this.fullName = fullName;
         this.phone = phone;
