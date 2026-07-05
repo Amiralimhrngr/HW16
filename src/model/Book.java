@@ -4,7 +4,7 @@ public class Book {
     private Long id;
     private String title;
     private String author;
-    private Double price;
+    private double price;
     private int stock;
 
     public Book(String title, String author, Double price, int stock) {
