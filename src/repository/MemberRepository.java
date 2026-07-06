@@ -1,5 +1,6 @@
 package repository;
 
+import exception.BookNotFoundException;
 import exception.DatabaseOperationException;
 import exception.MemberNotFoundException;
 import model.Member;
@@ -48,12 +49,36 @@ public class MemberRepository {
         ) {
             preparedStatement.setLong(1, id);
             int rowsAffected = preparedStatement.executeUpdate();
-            if (rowsAffected == 0){
+            if (rowsAffected == 0) {
                 throw new MemberNotFoundException("Couldn't find member with id: " + id);
             }
             return rowsAffected;
         } catch (SQLException e) {
             throw new DatabaseOperationException("Member delete operation failed: " + e.getMessage());
+        }
+    }
+
+    public void showAllMembers() {
+        try (
+                Connection connection = DatabaseConfig.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM member")
+        ) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                do {
+                    System.out.printf("""
+                            MEMBER
+                            ID: %d
+                            Full Name: %s
+                            Phone: %s
+                            """, resultSet.getLong(1), resultSet.getString(2),
+                            resultSet.getString(3));
+                } while (resultSet.next());
+            } else {
+                throw new MemberNotFoundException("No members in database");
+            }
+        } catch (SQLException e){
+            throw new DatabaseOperationException(e.getMessage());
         }
     }
 }
