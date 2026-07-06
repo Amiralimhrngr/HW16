@@ -65,6 +65,7 @@ public class Book {
     @Override
     public String toString() {
         return String.format("""
+                BOOK
                 ID: %d
                 Title: %s
                 Author: %s
