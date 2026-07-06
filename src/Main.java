@@ -139,10 +139,18 @@ public class Main {
                     }
                     break;
                 case 6:
-                    bookRepository.showAllBooks();
+                    try {
+                        bookRepository.showAllBooks();
+                    } catch (BookNotFoundException | DatabaseOperationException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case 7:
-                    memberRepository.showAllMembers();
+                    try {
+                        memberRepository.showAllMembers();
+                    } catch (MemberNotFoundException | DatabaseOperationException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case 8:
                     scanner.close();
