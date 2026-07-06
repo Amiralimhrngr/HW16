@@ -79,4 +79,30 @@ public class BookRepository {
             throw new DatabaseOperationException("Book delete operation failed: " + e.getMessage());
         }
     }
+
+    public void showAllBooks() {
+        try (
+                Connection connection = DatabaseConfig.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM book")
+        ) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                do {
+                    System.out.printf("""
+                            BOOK
+                            ID: %d
+                            Title: %s
+                            Author: %s
+                            Price: $%.2f
+                            Stock: %d
+                            """, resultSet.getLong(1), resultSet.getString(2),
+                            resultSet.getString(3), resultSet.getDouble(4), resultSet.getInt(5));
+                } while (resultSet.next());
+            } else {
+                throw new BookNotFoundException("No books in database");
+            }
+        } catch (SQLException e){
+            throw new DatabaseOperationException(e.getMessage());
+        }
+    }
 }
