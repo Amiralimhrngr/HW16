@@ -1,5 +1,6 @@
 import exception.BookNotFoundException;
 import exception.DatabaseOperationException;
+import exception.MemberNotFoundException;
 import model.Book;
 import model.Member;
 import repository.BookRepository;
@@ -23,6 +24,7 @@ public class Main {
         Member member2 = new Member("Jane Doe", "09129876543");
         Member member3 = new Member("Mike Tyson", "09351234567");
 
+        menu:
         while (true) {
             System.out.println("""
                     ==================== LIBRARY MANAGEMENT ====================
@@ -80,15 +82,46 @@ public class Main {
                     scanner.nextLine();
                     try {
                         Book updatedBook = bookRepository.updateBook(bookId, newPrice);
-                        if (updatedBook != null){
-                            System.out.printf("Book updated successfully! Book with ID: %d price set to $%.2f", updatedBook.getId(), updatedBook.getPrice());
+                        if (updatedBook != null) {
+                            System.out.printf("Book updated successfully! Book with ID: %d price set to $%.2f",
+                                    updatedBook.getId(), updatedBook.getPrice());
                         }
-                    } catch (BookNotFoundException e){
+                    } catch (BookNotFoundException e) {
                         System.out.println(e.getMessage());
                     }
                     break;
                 case 4:
-                        
+                    System.out.println("Please Enter Book's Id: ");
+                    long bookToDeleteId = scanner.nextLong();
+                    scanner.nextLine();
+                    try {
+                        int booksDeleted = bookRepository.deleteBook(bookToDeleteId);
+                        if (booksDeleted > 0) {
+                            System.out.println("Book deleted successfully!");
+                        }
+                    } catch (BookNotFoundException e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                case 5:
+                    System.out.println("Please Enter Member's Id: ");
+                    long memberToDeleteId = scanner.nextLong();
+                    scanner.nextLine();
+                    try {
+                        int membersDeleted = memberRepository.deleteMember(memberToDeleteId);
+                        if (membersDeleted > 0) {
+                            System.out.println("Member Deleted Successfully!");
+                        }
+                    } catch (MemberNotFoundException e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                case 6:
+                    scanner.close();
+                    System.out.println("Exiting...");
+                    break menu;
+                default:
+                    System.out.println("Please Enter a Valid Number!");
             }
         }
     }
