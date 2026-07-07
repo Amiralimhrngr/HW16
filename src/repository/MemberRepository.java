@@ -71,6 +71,7 @@ public class MemberRepository {
                             ID: %d
                             Full Name: %s
                             Phone: %s
+                            ------------------------------
                             """, resultSet.getLong(1), resultSet.getString(2),
                             resultSet.getString(3));
                 } while (resultSet.next());
