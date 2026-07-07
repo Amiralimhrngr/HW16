@@ -95,6 +95,7 @@ public class BookRepository {
                             Author: %s
                             Price: $%.2f
                             Stock: %d
+                            ----------------------------------
                             """, resultSet.getLong(1), resultSet.getString(2),
                             resultSet.getString(3), resultSet.getDouble(4), resultSet.getInt(5));
                 } while (resultSet.next());
