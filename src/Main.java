@@ -105,7 +105,7 @@ public class Main {
                     try {
                         Book updatedBook = bookRepository.updateBook(bookId, newPrice);
                         if (updatedBook != null) {
-                            System.out.printf("Book updated successfully! Book with ID: %d price set to $%.2f",
+                            System.out.printf("Book updated successfully! Book with ID: %d price set to $%.2f\n",
                                     updatedBook.getId(), updatedBook.getPrice());
                         }
                     } catch (BookNotFoundException | DatabaseOperationException e) {
